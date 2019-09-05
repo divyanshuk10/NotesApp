@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
  * Created by Divyanshu Kumar on 2019-09-04.
  * divyanshuk10@gmail.com
  */
-@Database(entities = Note.class, version = 1)
+@Database(entities = Note.class, version = 1,exportSchema = false)
 abstract class NoteDatabase extends RoomDatabase {
     private static NoteDatabase instance;
 
