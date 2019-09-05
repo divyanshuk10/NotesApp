@@ -29,7 +29,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.Noteholder> {
     public void onBindViewHolder(@NonNull Noteholder holder, int position) {
         Note currentNote = notes.get(position);
         holder.tv_title.setText(currentNote.getTitle());
-        holder.tv_priority.setText(currentNote.getPriority());
+        holder.tv_priority.setText(String.valueOf(currentNote.getPriority()));
         holder.tv_description.setText(currentNote.getDescription());
 
     }
