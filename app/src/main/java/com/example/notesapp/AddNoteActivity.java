@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.notesapp.MainActivity.EXTRA_ID;
+
 /**
  * Created by Divyanshu Kumar on 2019-09-05.
  * divyanshuk10@gmail.com
@@ -37,7 +39,15 @@ public class AddNoteActivity extends AppCompatActivity {
         np_priority.setMaxValue(10);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        setTitle("Add Note");
+
+        if (getIntent().hasExtra(EXTRA_ID)) {
+            setTitle("Edit Note");
+            et_title.setText(getIntent().getStringExtra(EXTRA_TITLE));
+            et_description.setText(getIntent().getStringExtra(EXTRA_DESCRIPTION));
+            np_priority.setValue(getIntent().getIntExtra(EXTRA_PRIORITY, 0));
+        } else {
+            setTitle("Add Note");
+        }
 
     }
 
@@ -51,9 +61,10 @@ public class AddNoteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_item:
+            case R.id.save_item: {
                 saveNote();
                 return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -73,6 +84,11 @@ public class AddNoteActivity extends AppCompatActivity {
         data.putExtra(EXTRA_TITLE, title);
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_PRIORITY, priority);
+
+        int id = getIntent().getIntExtra(EXTRA_ID, -1);
+        if (id != -1) {
+            data.putExtra(EXTRA_ID, id);
+        }
 
         setResult(RESULT_OK, data);
         finish();

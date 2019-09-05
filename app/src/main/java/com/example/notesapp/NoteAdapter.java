@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.Noteholder> {
     private List<Note> notes = new ArrayList<>();
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -26,12 +27,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.Noteholder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Noteholder holder, int position) {
+    public void onBindViewHolder(@NonNull Noteholder holder, final int position) {
         Note currentNote = notes.get(position);
         holder.tv_title.setText(currentNote.getTitle());
         holder.tv_priority.setText(String.valueOf(currentNote.getPriority()));
         holder.tv_description.setText(currentNote.getDescription());
-
     }
 
     @Override
@@ -48,6 +48,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.Noteholder> {
         notifyDataSetChanged();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     class Noteholder extends RecyclerView.ViewHolder {
 
         private TextView tv_title;
@@ -56,9 +60,21 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.Noteholder> {
 
         public Noteholder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION)
+                        listener.onItemClick(notes.get(position));
+                }
+            });
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_priority = itemView.findViewById(R.id.tv_priority);
             tv_description = itemView.findViewById(R.id.tv_description);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Note note);
     }
 }
